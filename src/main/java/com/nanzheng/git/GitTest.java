@@ -8,6 +8,6 @@ public class GitTest {
 
         System.out.println("hello branch:hot-fix!");
         System.out.println("hello branch:hot-fix test!");
-        System.out.println("hello  remote:hot-fix!")
+        System.out.println("hello  remote:hot-fix!");
     }
 }
