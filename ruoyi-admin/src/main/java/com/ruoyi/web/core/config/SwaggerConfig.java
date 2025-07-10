@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Swagger2的接口配置
@@ -60,5 +61,10 @@ public class SwaggerConfig
             .contact(new Contact().name(ruoyiConfig.getName()))
             // 版本
             .version("版本号:" + ruoyiConfig.getVersion());
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
