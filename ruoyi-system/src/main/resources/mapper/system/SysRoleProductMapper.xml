@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysRoleProductMapper">
+    
+    <resultMap type="SysRoleProduct" id="SysRoleProductResult">
+        <result property="id"    column="id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updataTime"    column="updata_time"    />
+    </resultMap>
+
+    <sql id="selectSysRoleProductVo">
+        select id, role_id, product_id, create_by, create_time, update_by, updata_time from role_products
+    </sql>
+
+    <select id="selectSysRoleProductList" parameterType="SysRoleProduct" resultMap="SysRoleProductResult">
+        <include refid="selectSysRoleProductVo"/>
+        <where>  
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null  and createTime != ''"> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updataTime != null  and updataTime != ''"> and updata_time = #{updataTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysRoleProductById" parameterType="Long" resultMap="SysRoleProductResult">
+        <include refid="selectSysRoleProductVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysRoleProduct" parameterType="SysRoleProduct">
+        insert into role_products
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updataTime != null">updata_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updataTime != null">#{updataTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRoleProduct" parameterType="SysRoleProduct">
+        update role_products
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updataTime != null">updata_time = #{updataTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysRoleProductById" parameterType="Long">
+        delete from role_products where id = #{id}
+    </delete>
+
+    <delete id="deleteSysRoleProductByIds" parameterType="String">
+        delete from role_products where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

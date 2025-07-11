@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysServiceMapper">
+    
+    <resultMap type="SysService" id="SysServiceResult">
+        <result property="serviceId"    column="service_id"    />
+        <result property="serviceName"    column="service_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updataTime"    column="updata_time"    />
+    </resultMap>
+
+    <sql id="selectSysServiceVo">
+        select service_id, service_name, create_by, create_time, update_by, updata_time from services
+    </sql>
+
+    <select id="selectSysServiceList" parameterType="SysService" resultMap="SysServiceResult">
+        <include refid="selectSysServiceVo"/>
+        <where>  
+            <if test="serviceId != null "> and service_id = #{serviceId}</if>
+            <if test="serviceName != null  and serviceName != ''"> and service_name like concat('%', #{serviceName}, '%')</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null  and createTime != ''"> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updataTime != null  and updataTime != ''"> and updata_time = #{updataTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysServiceByServiceId" parameterType="Long" resultMap="SysServiceResult">
+        <include refid="selectSysServiceVo"/>
+        where service_id = #{serviceId}
+    </select>
+
+    <insert id="insertSysService" parameterType="SysService">
+        insert into services
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">service_id,</if>
+            <if test="serviceName != null">service_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updataTime != null">updata_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceId != null">#{serviceId},</if>
+            <if test="serviceName != null">#{serviceName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updataTime != null">#{updataTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysService" parameterType="SysService">
+        update services
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceName != null">service_name = #{serviceName},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updataTime != null">updata_time = #{updataTime},</if>
+        </trim>
+        where service_id = #{serviceId}
+    </update>
+
+    <delete id="deleteSysServiceByServiceId" parameterType="Long">
+        delete from services where service_id = #{serviceId}
+    </delete>
+
+    <delete id="deleteSysServiceByServiceIds" parameterType="String">
+        delete from services where service_id in 
+        <foreach item="serviceId" collection="array" open="(" separator="," close=")">
+            #{serviceId}
+        </foreach>
+    </delete>
+</mapper>
