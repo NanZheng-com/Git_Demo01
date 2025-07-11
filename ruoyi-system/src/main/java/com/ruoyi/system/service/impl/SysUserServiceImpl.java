@@ -3,6 +3,8 @@ package com.ruoyi.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.system.domain.SysService;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -546,5 +548,20 @@ public class SysUserServiceImpl implements ISysUserService
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    /**
+     * 校验用户是否有权限并列出可访问服务集合
+     *
+     * @param userId 用户id
+     * @return 结果
+     */
+    @Override
+    public List<SysService> PermissionVerification(Long userId) {
+        if(userId == null){
+            throw new IllegalArgumentException("UserId cannot be null");
+        }
+
+        return userMapper.selectServiceByUserId(userId);
     }
 }

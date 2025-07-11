@@ -46,6 +46,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dataScope"    column="data_scope"     />
         <result property="status"       column="role_status"    />
     </resultMap>
+
+	<resultMap type="SysService" id="SysServiceResult">
+		<result property="serviceId"    column="service_id"    />
+		<result property="serviceName"    column="service_name"    />
+		<result property="createBy"    column="create_by"    />
+		<result property="createTime"    column="create_time"    />
+		<result property="updateBy"    column="update_by"    />
+		<result property="updateTime"    column="updata_time"    />
+	</resultMap>
 	
 	<sql id="selectUserVo">
         select u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_by, u.create_time, u.remark, 
@@ -141,6 +150,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
 		select user_id, email from sys_user where email = #{email} and del_flag = '0' limit 1
+	</select>
+
+	<select id="selectServiceByUserId" parameterType="Long" resultMap="SysServiceResult">
+		select distinct sys_user.* from services s join product_services ps on s.service_id = ps.service_id join
 	</select>
 	
 	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
